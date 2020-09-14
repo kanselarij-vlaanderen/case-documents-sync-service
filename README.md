@@ -11,8 +11,8 @@ Use following snippet in delta-notifier config:
 {
   match: {
     predicate: {
-      type: "uri",
-      value: "http://mu.semte.ch/vocabularies/ext/bevatAgendapuntDocumentversie"
+      type: 'uri',
+      value: 'http://mu.semte.ch/vocabularies/ext/bevatAgendapuntDocumentversie'
     }
   },
   callback: {
@@ -24,12 +24,12 @@ Use following snippet in delta-notifier config:
     gracePeriod: 5000,
     ignoreFromSelf: true
   }
-}
+},
 {
   match: {
     predicate: {
-      type: "uri",
-      value: "http://mu.semte.ch/vocabularies/ext/bevatDocumentversie"
+      type: 'uri',
+      value: 'http://mu.semte.ch/vocabularies/ext/bevatDocumentversie'
     }
   },
   callback: {
@@ -41,7 +41,6 @@ Use following snippet in delta-notifier config:
     gracePeriod: 5000,
     ignoreFromSelf: true
   }
-}
 ```
 
 ## Available endpoints
