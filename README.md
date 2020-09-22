@@ -12,7 +12,7 @@ Use following snippet in delta-notifier config:
   match: {
     predicate: {
       type: 'uri',
-      value: 'http://mu.semte.ch/vocabularies/ext/bevatAgendapuntDocumentversie'
+      value: 'http://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk'
     }
   },
   callback: {
@@ -29,7 +29,7 @@ Use following snippet in delta-notifier config:
   match: {
     predicate: {
       type: 'uri',
-      value: 'http://mu.semte.ch/vocabularies/ext/bevatDocumentversie'
+      value: 'http://mu.semte.ch/vocabularies/ext/bevatDocumentversie' // Will get changed in future model refactoring
     }
   },
   callback: {

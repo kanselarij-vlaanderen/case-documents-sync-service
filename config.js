@@ -6,7 +6,7 @@ const CASE_DOC_PREDICATE = 'https://data.vlaanderen.be/ns/dossier#Dossier.bestaa
 const WATCH_TYPES = [
   {
     type: 'http://data.vlaanderen.be/ns/besluit#Agendapunt',
-    predicateToDoc: { uri: 'http://mu.semte.ch/vocabularies/ext/bevatAgendapuntDocumentversie', inverse: false }, // Will be updated in future model changes
+    predicateToDoc: { uri: 'http://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk', inverse: false },
     pathToCase: [
       { uri: 'http://data.vlaanderen.be/ns/besluitvorming#genereertAgendapunt', inverse: true },
       { uri: 'http://data.vlaanderen.be/ns/besluitvorming#vindtPlaatsTijdens', inverse: false },
@@ -14,7 +14,7 @@ const WATCH_TYPES = [
     ]
   },
   {
-    type: 'http://dbpedia.org/ontology/UnitOfWork', // Will be updated in future model changes
+    type: 'https://data.vlaanderen.be/ns/dossier#Procedurestap',
     predicateToDoc: { uri: 'http://mu.semte.ch/vocabularies/ext/bevatDocumentversie', inverse: false }, // Will be updated in future model changes
     pathToCase: [
       { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true }
