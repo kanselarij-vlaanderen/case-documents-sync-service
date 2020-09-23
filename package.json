@@ -1,7 +1,7 @@
 {
-  "name": "acmidm-login-service",
+  "name": "case-documents-sync",
   "version": "1.0.1",
-  "description": "Microservice to login using ACM/IDM with OpenId",
+  "description": "Microservice to keep the 'Dossier' up to date when adding documents to other entities",
   "dependencies": {
     "@lblod/mu-auth-sudo": "^0.2.0",
     "body-parser": "^1.19.0",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/acmidm-login-service.git"
+    "url": "git+https://github.com/lblod/case-documents-sync.git"
   },
   "author": "redpencil.io",
   "license": "MIT"
