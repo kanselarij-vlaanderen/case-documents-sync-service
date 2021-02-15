@@ -14,9 +14,10 @@ const WATCH_TYPES = [
     ]
   },
   {
-    type: 'https://data.vlaanderen.be/ns/dossier#Procedurestap',
-    predicateToDoc: { uri: 'http://mu.semte.ch/vocabularies/ext/bevatDocumentversie', inverse: false }, // Will be updated in future model changes
+    type: 'http://mu.semte.ch/vocabularies/ext/Indieningsactiviteit',
+    predicateToDoc: { uri: 'http://www.w3.org/ns/prov#generated', inverse: false },
     pathToCase: [
+      { uri: 'http://mu.semte.ch/vocabularies/ext/indieningVindtPlaatsTijdens', inverse: false },
       { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true }
     ]
   }
