@@ -1,0 +1,88 @@
+---
+kind: pipeline
+type: docker
+name: build-dry-run
+steps:
+- name: build-dry-run
+  image: plugins/docker
+  settings:
+    repo: ${DRONE_REPO_NAMESPACE/kanselarij-vlaanderen/kanselarij}/${DRONE_REPO_NAME}
+    dry_run: true
+    purge: true
+trigger:
+  event:
+    - pull_request
+
+---
+kind: pipeline
+type: docker
+name: push-latest-build
+steps:
+- name: push-latest-build
+  image: plugins/docker
+  settings:
+    repo: ${DRONE_REPO_NAMESPACE/kanselarij-vlaanderen/kanselarij}/${DRONE_REPO_NAME}
+    tags: latest
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    purge: true
+trigger:
+  branch:
+    - master
+  event:
+    exclude:
+      - pull_request
+---
+kind: pipeline
+type: docker
+name: push-feature-build
+steps:
+- name: push-feature-build
+  image: plugins/docker
+  settings:
+    repo: ${DRONE_REPO_NAMESPACE/kanselarij-vlaanderen/kanselarij}/${DRONE_REPO_NAME}
+    tags: ${DRONE_BRANCH/\//-}
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    purge: true
+trigger:
+  branch:
+    - feature/*
+  event:
+    exclude:
+      - pull_request
+---
+kind: pipeline
+type: docker
+name: release
+steps:
+- name: push-tagged-build
+  image: plugins/docker
+  settings:
+    repo: ${DRONE_REPO_NAMESPACE/kanselarij-vlaanderen/kanselarij}/${DRONE_REPO_NAME}
+    tags: ${DRONE_TAG##v}
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    purge: true
+trigger:
+  event:
+    - tag
+---
+kind: secret
+name: docker_username
+data: 29Dg2Z86BQR2/vyHzOcIBaOe+GKw5rzg9erkMkZSUvEEOmpJuXI1K/7n/9qE
+---
+kind: secret
+name: docker_password
+data: 3fR17n1r6wPZ7f3uEMnNd7xSIp7kkQP6nM8LaXHkmGSAj4dQzB7aCmv/BmnAS5cERy/mbc8E3aBuQ/B/IbaLMg==
+---
+kind: signature
+hmac: 8053b429a1fb21804e55fd512f3c34787379e7d94853a33e0d6a757300a12b66
+
+...
