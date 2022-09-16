@@ -10,7 +10,8 @@ const WATCH_TYPES = [
     pathToCase: [
       { uri: 'http://data.vlaanderen.be/ns/besluitvorming#genereertAgendapunt', inverse: true },
       { uri: 'http://data.vlaanderen.be/ns/besluitvorming#vindtPlaatsTijdens', inverse: false },
-      { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true }
+      { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true },
+      { uri: 'https://data.vlaanderen.be/ns/dossier#Dossier.isNeerslagVan', inverse: true }
     ]
   },
   {
@@ -18,7 +19,8 @@ const WATCH_TYPES = [
     predicateToDoc: { uri: 'http://www.w3.org/ns/prov#generated', inverse: false },
     pathToCase: [
       { uri: 'http://mu.semte.ch/vocabularies/ext/indieningVindtPlaatsTijdens', inverse: false },
-      { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true }
+      { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true },
+      { uri: 'https://data.vlaanderen.be/ns/dossier#Dossier.isNeerslagVan', inverse: true }
     ]
   }
 ];
