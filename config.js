@@ -6,10 +6,10 @@ const CASE_DOC_PREDICATE = 'https://data.vlaanderen.be/ns/dossier#Dossier.bestaa
 const WATCH_TYPES = [
   {
     type: 'http://data.vlaanderen.be/ns/besluit#Agendapunt',
-    predicateToDoc: { uri: 'http://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk', inverse: false },
+    predicateToDoc: { uri: 'https://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk', inverse: false },
     pathToCase: [
-      { uri: 'http://data.vlaanderen.be/ns/besluitvorming#genereertAgendapunt', inverse: true },
-      { uri: 'http://data.vlaanderen.be/ns/besluitvorming#vindtPlaatsTijdens', inverse: false },
+      { uri: 'https://data.vlaanderen.be/ns/besluitvorming#genereertAgendapunt', inverse: true },
+      { uri: 'https://data.vlaanderen.be/ns/besluitvorming#vindtPlaatsTijdens', inverse: false },
       { uri: 'https://data.vlaanderen.be/ns/dossier#doorloopt', inverse: true },
       { uri: 'https://data.vlaanderen.be/ns/dossier#Dossier.isNeerslagVan', inverse: true }
     ]
