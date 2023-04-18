@@ -1,6 +1,6 @@
 {
   "name": "case-documents-sync",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Microservice to keep the 'Dossier' up to date when adding documents to other entities",
   "dependencies": {
     "@lblod/mu-auth-sudo": "^0.2.0",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/case-documents-sync.git"
+    "url": "git+https://github.com/kanselarij-vlaanderen/case-documents-sync-service.git"
   },
   "author": "redpencil.io",
   "license": "MIT"
