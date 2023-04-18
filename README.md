@@ -12,7 +12,7 @@ Use following snippet in delta-notifier config:
   match: {
     predicate: {
       type: 'uri',
-      value: 'http://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk'
+      value: 'https://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk'
     }
   },
   callback: {
