@@ -60,4 +60,6 @@ Internal endpoint for receiving deltas from the [delta-notifier](https://github.
 
 #### POST /cases/id/sync
 
-endpoint to manually trigger a sync of case documents in cases where the deltas are not enough
+endpoint to manually trigger a sync of case documents in cases where the deltas are not enough.
+Example: When documents are no longer part of a case when the subcase and its documents has moved
+to a different case.
