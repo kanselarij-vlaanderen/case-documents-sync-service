@@ -41,6 +41,15 @@ Use following snippet in delta-notifier config:
     gracePeriod: 5000,
     ignoreFromSelf: true
   }
+}
+```
+
+Add rules to the `dispatcher.ex` to dispatch requests to the case documents sync service.
+
+```ex
+post "/case-documents-sync/cases/:case_id/sync" do
+  Proxy.forward conn, [], "http://case-documents-sync/cases/" <> case_id <> "/sync"
+end
 ```
 
 ## Available endpoints
@@ -48,3 +57,7 @@ Use following snippet in delta-notifier config:
 #### POST /delta
 
 Internal endpoint for receiving deltas from the [delta-notifier](https://github.com/mu-semtech/delta-notifier)
+
+#### POST /cases/id/sync
+
+endpoint to manually trigger a sync of case documents in cases where the deltas are not enough
