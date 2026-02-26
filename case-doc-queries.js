@@ -26,46 +26,92 @@ WHERE {
 }
 
 async function syncDocsForCase(caseId) {
-  const queryString = `
+  // delete all documents that don't belong on the case
+  const deleteUnrelatedDocumentsQuery = `
 PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
 PREFIX dossier: <https://data.vlaanderen.be/ns/dossier#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+PREFIX besluitvorming: <https://data.vlaanderen.be/ns/besluitvorming#>
 
 DELETE {
-  ?case dossier:Dossier.bestaatUit ?currentDocuments .
-}
-
-INSERT {
-  ?case dossier:Dossier.bestaatUit ?subcaseDocuments .
+    ?case dossier:Dossier.bestaatUit ?currentDocuments .
 }
 
 WHERE {
-  ?case a dossier:Dossier ;
-        mu:uuid ${sparqlEscapeString(caseId)} .
-  OPTIONAL {
-    ?case dossier:Dossier.bestaatUit ?currentDocuments .
-  }
-  OPTIONAL {
-    ?case dossier:Dossier.isNeerslagVan ?decisionmakingFlow .
-    ?decisionmakingFlow dossier:doorloopt ?subcase .
-    ?subcase a dossier:Procedurestap .
-    ?submissionActivity a ext:Indieningsactiviteit ;
-                        ext:indieningVindtPlaatsTijdens ?subcase ;
-                        prov:generated ?subcaseDocuments .
-  }
+    ?case a dossier:Dossier ;
+          mu:uuid ${sparqlEscapeString(caseId)} ;
+          dossier:Dossier.isNeerslagVan ?decisionmakingFlow ;
+          dossier:Dossier.bestaatUit ?currentDocuments .
 
-  FILTER NOT EXISTS {
-    ?case dossier:Dossier.bestaatUit ?subcaseDocuments .
-  }
-
-  FILTER NOT EXISTS {
-    ?submissionActivity prov:generated ?currentDocuments .
-  }
+    FILTER NOT EXISTS {
+      ?decisionmakingFlow dossier:doorloopt / ^ext:indieningVindtPlaatsTijdens / prov:generated ?currentDocuments .
+    }
+    FILTER NOT EXISTS {
+      ?decisionmakingFlow dossier:doorloopt /
+      ^besluitvorming:vindtPlaatsTijdens /
+      besluitvorming:genereertAgendapunt /
+      besluitvorming:geagendeerdStuk  ?currentDocuments .
+    }
 }
 `;
 
-  await update(queryString);
+  // insert all documents connected to subcase via all submission-activities
+  const insertSubcaseDocumentsQuery = `
+PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+PREFIX dossier: <https://data.vlaanderen.be/ns/dossier#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+PREFIX besluitvorming: <https://data.vlaanderen.be/ns/besluitvorming#>
+
+INSERT {
+    ?case dossier:Dossier.bestaatUit ?subcaseDocuments .
+}
+
+WHERE {
+    ?case a dossier:Dossier ;
+          mu:uuid ${sparqlEscapeString(caseId)} ;
+          dossier:Dossier.isNeerslagVan ?decisionmakingFlow .
+
+    ?decisionmakingFlow dossier:doorloopt / ^ext:indieningVindtPlaatsTijdens / prov:generated ?subcaseDocuments .
+
+    FILTER NOT EXISTS { ?case dossier:Dossier.bestaatUit ?subcaseDocuments . }
+}
+  `;
+
+  // insert all documents connected to an agendaitem (these should technically also be connected to the above submission-activities)
+  const insertAgendaitemDocumentsQuery= `
+PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+PREFIX dossier: <https://data.vlaanderen.be/ns/dossier#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+PREFIX besluitvorming: <https://data.vlaanderen.be/ns/besluitvorming#>
+
+INSERT {
+    ?case dossier:Dossier.bestaatUit ?agendaitemDocuments .
+}
+
+WHERE {
+    ?case a dossier:Dossier ;
+          mu:uuid ${sparqlEscapeString(caseId)} ;
+          dossier:Dossier.isNeerslagVan ?decisionmakingFlow .
+
+    ?decisionmakingFlow dossier:doorloopt /
+    ^besluitvorming:vindtPlaatsTijdens /
+    besluitvorming:genereertAgendapunt /
+    besluitvorming:geagendeerdStuk  ?agendaitemDocuments .
+
+    FILTER NOT EXISTS { ?case dossier:Dossier.bestaatUit ?agendaitemDocuments . }
+}
+  `
+
+  try {
+    await update(deleteUnrelatedDocumentsQuery);
+    await update(insertSubcaseDocumentsQuery);
+    await update(insertAgendaitemDocumentsQuery);
+  } catch (error) {
+    throw new Error(`Failed to execute some steps during syncing of the case documents. Reason: ${error.message}`);
+  }
 }
 
 module.exports = {
