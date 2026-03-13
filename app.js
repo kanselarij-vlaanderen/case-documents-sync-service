@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import * as deltaUtil from './lib/delta-util';
 import { subjectIsTypeInGraph } from './util-queries';
 import { syncDocsForSubjectInGraph } from './case-doc-queries';
-import { GRAPH, UPDATEABLE_PREDICATES, WATCH_TYPES } from './config';
+import { ALLOWED_DELTA_SIZE, GRAPH, UPDATEABLE_PREDICATES, WATCH_TYPES } from './config';
 
-app.post('/delta', bodyParser.json(), async (req, res) => {
+app.post('/delta', bodyParser.json({ limit: ALLOWED_DELTA_SIZE }), async (req, res) => {
   res.status(202).end();
   const insertionDeltas = deltaUtil.insertionDeltas(req.body);
   const deletionDeltas = deltaUtil.deletionDeltas(req.body);

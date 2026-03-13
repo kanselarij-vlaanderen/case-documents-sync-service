@@ -1,3 +1,5 @@
+const ALLOWED_DELTA_SIZE = process.env.ALLOWED_DELTA_SIZE || '100mb';
+
 const GRAPH = 'http://mu.semte.ch/graphs/organizations/kanselarij';
 
 const CASE_TYPE = 'https://data.vlaanderen.be/ns/dossier#Dossier';
@@ -28,6 +30,7 @@ const WATCH_TYPES = [
 const UPDATEABLE_PREDICATES = WATCH_TYPES.map(t => t.predicateToDoc.uri);
 
 module.exports = {
+  ALLOWED_DELTA_SIZE,
   GRAPH,
   CASE_TYPE,
   CASE_DOC_PREDICATE,
