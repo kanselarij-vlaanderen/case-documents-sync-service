@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 
 import * as deltaUtil from './lib/delta-util';
 import { subjectIsTypeInGraph } from './util-queries';
-import { syncDocsForSubjectInGraph } from './case-doc-queries';
+import { syncDocsForSubjectInGraph, syncDocsForCase } from './case-doc-queries';
 import { ALLOWED_DELTA_SIZE, GRAPH, UPDATEABLE_PREDICATES, WATCH_TYPES } from './config';
 
 app.post('/delta', bodyParser.json({ limit: ALLOWED_DELTA_SIZE }), async (req, res) => {
@@ -27,6 +27,27 @@ app.post('/delta', bodyParser.json({ limit: ALLOWED_DELTA_SIZE }), async (req, r
     if (await subjectIsTypeInGraph(subjectUri, GRAPH, [subjectType])) {
       await syncDocsForSubjectInGraph(d.subject.value, subjectType, GRAPH);
     }
+  }
+});
+
+/**
+ * The automatic delta processing should cover most of the syncing if case documents
+ * this route can be called manually for actions where the sync doesn't work
+ * Like moving subcases between cases.
+ * We need to remove documents from the old case and add to the new case
+ */
+app.post('/cases/:id/sync', async (req, res, next) => {
+  try {
+    const caseId = req.params.id;
+    if (!caseId) {
+      return next({ message: 'Path parameter case ID was not set, cannot proceed', status: 400 });
+    }
+    await syncDocsForCase(caseId);
+    return res.status(201).send();
+  } catch(e) {
+    console.log('could not sync case documents');
+    console.trace(e);
+    return next({ message: e.message, status: 500 });
   }
 });
 
