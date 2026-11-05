@@ -4,7 +4,12 @@ In practice however, it is currently desired that new documents can be added dir
 Keeping the case's documents "in sync" each time the documents in a related entity gets updated, is difficult to fully cover in the fronted. This service listens to changes in the relationships to documents through [delta's](https://github.com/mu-semtech/delta-notifier) and updates the case's documents accordingly.
 
 ## Configuration
-All configuration is hard-coded in `config.js`.
+The watched types and their paths to the case are hard-coded in `config.js`. The following environment variables can be set on the service:
+
+| Variable             | Description                                                                                  | Default     |
+|----------------------|----------------------------------------------------------------------------------------------|-------------|
+| `ALLOWED_DELTA_SIZE` | Maximum body size accepted on `POST /delta`                                                  | `100mb`     |
+| `CRON_PATTERN`       | [Cron pattern](https://github.com/node-cron/node-cron#cron-syntax) for the scheduled full sync | `0 0 * * *` |
 
 Use following snippet in delta-notifier config:
 ```js
@@ -48,3 +53,9 @@ Use following snippet in delta-notifier config:
 #### POST /delta
 
 Internal endpoint for receiving deltas from the [delta-notifier](https://github.com/mu-semtech/delta-notifier)
+
+#### POST /run
+
+Runs a full sync on demand, the same one the cron job runs according to `CRON_PATTERN`. For each type in `WATCH_TYPES` it adds the documents that are related to an entity of that type, but missing from the entity's case. This catches up on deltas the service missed. Only the kanselarij graph is synced and nothing gets removed from a case.
+
+Returns `200` when the sync has completed. As this can take a while on a large dataset, the response is only sent afterward.
