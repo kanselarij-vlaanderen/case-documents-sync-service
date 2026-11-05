@@ -5,12 +5,9 @@ const GRAPH = 'http://mu.semte.ch/graphs/organizations/kanselarij';
 const CASE_TYPE = 'https://data.vlaanderen.be/ns/dossier#Dossier';
 const CASE_DOC_PREDICATE = 'https://data.vlaanderen.be/ns/dossier#Dossier.bestaatUit';
 
-const AGENDAPUNT_TYPE = 'http://data.vlaanderen.be/ns/besluit#Agendapunt';
-const INDIENINGSACTIVITEIT_TYPE = 'http://mu.semte.ch/vocabularies/ext/Indieningsactiviteit';
-
 const WATCH_TYPES = [
   {
-    type: AGENDAPUNT_TYPE,
+    type: 'http://data.vlaanderen.be/ns/besluit#Agendapunt',
     predicateToDoc: { uri: 'https://data.vlaanderen.be/ns/besluitvorming#geagendeerdStuk', inverse: false },
     pathToCase: [
       { uri: 'https://data.vlaanderen.be/ns/besluitvorming#genereertAgendapunt', inverse: true },
@@ -20,7 +17,7 @@ const WATCH_TYPES = [
     ]
   },
   {
-    type: INDIENINGSACTIVITEIT_TYPE,
+    type: 'http://mu.semte.ch/vocabularies/ext/Indieningsactiviteit',
     predicateToDoc: { uri: 'http://www.w3.org/ns/prov#generated', inverse: false },
     pathToCase: [
       { uri: 'http://mu.semte.ch/vocabularies/ext/indieningVindtPlaatsTijdens', inverse: false },
@@ -38,7 +35,5 @@ module.exports = {
   CASE_TYPE,
   CASE_DOC_PREDICATE,
   WATCH_TYPES,
-  UPDATEABLE_PREDICATES,
-  AGENDAPUNT_TYPE,
-  INDIENINGSACTIVITEIT_TYPE
+  UPDATEABLE_PREDICATES
 };
