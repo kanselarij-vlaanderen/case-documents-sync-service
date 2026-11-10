@@ -29,7 +29,7 @@ const WATCH_TYPES = [
 
 const UPDATEABLE_PREDICATES = WATCH_TYPES.map(t => t.predicateToDoc.uri);
 
-module.exports = {
+export {
   ALLOWED_DELTA_SIZE,
   GRAPH,
   CASE_TYPE,

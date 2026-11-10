@@ -24,6 +24,6 @@ WHERE {
   await update(queryString, { sudo: true });
 }
 
-module.exports = {
+export {
   syncDocsForSubjectInGraph
 };

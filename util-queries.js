@@ -63,7 +63,7 @@ INSERT DATA {
   }
 }
 
-module.exports = {
+export {
   subjectIsTypeInGraph,
   deleteQuads,
   insertQuads
