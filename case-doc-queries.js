@@ -1,5 +1,4 @@
-import { updateSudo } from '@lblod/mu-auth-sudo';
-import { sparqlEscapeUri } from 'mu';
+import { sparqlEscapeUri, update } from 'mu';
 import { CASE_TYPE, CASE_DOC_PREDICATE, WATCH_TYPES } from './config';
 import { relationPathForType } from './lib/query-util';
 
@@ -22,7 +21,7 @@ WHERE {
     }
 }
   `;
-  await updateSudo(queryString);
+  await update(queryString, { sudo: true });
 }
 
 module.exports = {

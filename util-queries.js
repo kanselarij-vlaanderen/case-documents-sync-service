@@ -1,5 +1,4 @@
-import { querySudo, updateSudo } from '@lblod/mu-auth-sudo';
-import { sparqlEscape, sparqlEscapeUri } from 'mu';
+import { sparqlEscape, sparqlEscapeUri, query, update } from 'mu';
 import groupBy from 'lodash.groupby';
 
 import { parseSparqlResults } from './lib/query-util';
@@ -16,7 +15,7 @@ WHERE {
     }
 }
   `;
-  const result = await querySudo(queryString);
+  const result = await query(queryString, { sudo: true });
   const parsedResults = parseSparqlResults(result);
   return parsedResults.length ? parsedResults[0].type : null;
 }
@@ -43,7 +42,7 @@ async function deleteQuads (quads) {
 DELETE DATA {
     ${graphStatements}
 }`;
-    const result = await updateSudo(queryString);
+    const result = await update(queryString, { sudo: true });
     return result;
   } else {
     return null;
@@ -57,7 +56,7 @@ async function insertQuads (quads) {
 INSERT DATA {
     ${graphStatements}
 }`;
-    const result = await updateSudo(queryString);
+    const result = await update(queryString, { sudo: true });
     return result;
   } else {
     return null;
